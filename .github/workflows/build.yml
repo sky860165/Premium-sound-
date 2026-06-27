@@ -20,29 +20,18 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
       - name: Unzip project
-        run: |
-          unzip PremiumSounds_v3_0_DSP_fixed.zip
-          ls -la
+        run: unzip PremiumSounds_v3_0_DSP.zip
 
-      - name: Create gradle.properties
+      - name: Build APK
         run: |
+          chmod +x premiumsounds/gradlew
           cd premiumsounds
-          echo "android.useAndroidX=true" >> gradle.properties
-          echo "android.enableJetifier=true" >> gradle.properties
-          echo "org.gradle.jvmargs=-Xmx2560m -XX:MaxMetaspaceSize=768m" >> gradle.properties
-
-      - name: Build Debug APK
-        run: |
-          cd premiumsounds
-          gradle assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: PremiumSounds-APK
-          path: "**/outputs/apk/debug/app-debug.apk"
+          path: premiumsounds/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 7
