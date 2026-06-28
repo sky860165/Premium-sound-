@@ -1,4 +1,4 @@
-name: Build APK
+uname: Build APK
 on:
   push:
     branches: [ main ]
@@ -29,7 +29,7 @@ jobs:
           echo "$PWD/gradle-8.9/bin" >> $GITHUB_PATH
 
       - name: Unzip project
-        run: unzip PremiumSounds_v3_0_DSP.zip
+        run: unzip PremiumSounds_v4_FIXED.zip
 
       - name: Build APK
         run: |
