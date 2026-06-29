@@ -29,9 +29,6 @@ jobs:
           unzip -q gradle-8.9-bin.zip
           echo "$PWD/gradle-8.9/bin" >> $GITHUB_PATH
 
-      - name: Unzip project
-        run: unzip PremiumSounds_v5_ULTRA.zip
-
       - name: Build APK
         run: |
           cd PremiumSoundsV5
