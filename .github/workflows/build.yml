@@ -20,6 +20,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: Unzip project
         run: |
           unzip PremiumSounds_v5_ULTRA_fixed.zip
@@ -35,8 +38,7 @@ jobs:
       - name: Build Debug APK
         run: |
           cd PremiumSoundsV5
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
