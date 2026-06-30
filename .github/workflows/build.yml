@@ -1,5 +1,4 @@
 name: Build APK
-
 on:
   push:
     branches: [ main ]
@@ -20,29 +19,28 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          packages: ''
-
-      - name: Install Gradle 8.9
-        run: |
-          wget -q https://services.gradle.org/distributions/gradle-8.9-bin.zip
-          unzip -q gradle-8.9-bin.zip
-          echo "$PWD/gradle-8.9/bin" >> $GITHUB_PATH
 
       - name: Unzip project
-        run: unzip PremiumSounds_v5_ULTRA.zip
+        run: |
+          unzip PremiumSounds_v5_ULTRA_fixed.zip
+          ls -la
 
-      - name: Build APK
+      - name: Create gradle.properties
         run: |
           cd PremiumSoundsV5
-          echo "android.useAndroidX=true" > gradle.properties
+          echo "android.useAndroidX=true" >> gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
-          echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
-          gradle assembleDebug --no-daemon
+          echo "org.gradle.jvmargs=-Xmx2560m -XX:MaxMetaspaceSize=768m" >> gradle.properties
+
+      - name: Build Debug APK
+        run: |
+          cd PremiumSoundsV5
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: PremiumSounds-APK
-          path: PremiumSoundsV5/app/build/outputs/apk/debug/app-debug.apk
+          path: "**/outputs/apk/debug/app-debug.apk"
           retention-days: 7
